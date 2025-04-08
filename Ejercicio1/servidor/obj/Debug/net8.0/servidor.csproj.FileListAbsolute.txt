@@ -1,0 +1,15 @@
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\bin\Debug\net8.0\servidor.exe
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\bin\Debug\net8.0\servidor.deps.json
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\bin\Debug\net8.0\servidor.runtimeconfig.json
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\bin\Debug\net8.0\servidor.dll
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\bin\Debug\net8.0\servidor.pdb
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.AssemblyInfoInputs.cache
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.AssemblyInfo.cs
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.csproj.CoreCompileInputs.cache
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.sourcelink.json
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.dll
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\refint\servidor.dll
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.pdb
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.genruntimeconfig.cache
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\ref\servidor.dll
