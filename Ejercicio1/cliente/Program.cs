@@ -17,7 +17,7 @@ namespace Client
                 client.Connect("127.0.0.1", 10001);
                 if (client.Connected)
                 {
-                    Console.WriteLine("Cliente:✅ Cliente conectado ");
+                    Console.WriteLine("Cliente:✅ Cliente conectado al servidor");
                 }
             }
             catch (Exception ex)
