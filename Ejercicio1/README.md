@@ -5,4 +5,4 @@ Para probar la conexión, primero ejecutamos el servidor y luego el cliente. Amb
 🎯 Resultado esperado en el servidor  
   ![alt text](image.png)  
 🎯 Resultado esperado en el cliente   
-![alt text](image-1.png)
+  ![alt text](image-1.png)
