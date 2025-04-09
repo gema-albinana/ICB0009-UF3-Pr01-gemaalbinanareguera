@@ -1,38 +1,31 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 class Servidor
 {
-    static TcpListener ServidorTcp = new TcpListener(IPAddress.Parse("127.0.0.1"), 10001); // Inicializado aquí
-
-    static string HostName = "localhost";
+    static TcpListener ServidorTcp = new TcpListener(IPAddress.Parse("127.0.0.1"), 10001);
 
     static void Main(string[] args)
     {
-        byte[] bufferLectura = new byte[1024];
-
-        // Obtener y mostrar las IP del servidor
-        IPAddress[] addresses = Dns.GetHostAddresses(HostName);
-        foreach (IPAddress IP in addresses)
-        {
-            Console.WriteLine("Dirección IP: {0}", IP.ToString());
-        }
-
-        // Inicializar y arrancar el servidor
-        ServidorTcp = new TcpListener(IPAddress.Parse("127.0.0.1"), 10001);
         ServidorTcp.Start();
-        Console.WriteLine("🚦 Servidor iniciado");
+        Console.WriteLine("🚦 Servidor iniciado. Esperando conexiones...");
 
-        // Esperar y aceptar conexión de un cliente
-        TcpClient Cliente = ServidorTcp.AcceptTcpClient();
-
-        if (Cliente.Connected)
+        while (true) // Bucle infinito para aceptar múltiples clientes
         {
-            Console.WriteLine("✅ Cliente conectado");
-        }
+            TcpClient cliente = ServidorTcp.AcceptTcpClient(); // Espera un nuevo cliente
+            Console.WriteLine("✅ Cliente conectado.");
 
-        // Mantener la ventana abierta
-        Console.ReadLine();
+            // Crear un nuevo hilo para gestionar al cliente
+            Thread clienteThread = new Thread(() => GestionarCliente(cliente));
+            clienteThread.Start();
+        }
+    }
+
+    static void GestionarCliente(TcpClient cliente)
+    {
+        Console.WriteLine("🚗 Gestionando nuevo vehículo...");
+        
     }
 }

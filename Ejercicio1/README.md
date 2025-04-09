@@ -6,4 +6,10 @@ Para probar la conexión, primero ejecutamos el servidor y luego el cliente. Amb
   ![alt text](image.png)  
 
 🎯 Resultado esperado en el cliente   
-  ![alt text](image-1.png)
+  ![alt text](image-1.png)  
+
+## 📌 **Etapa 2: Aceptación de clientes**  
+En esta etapa, el servidor ha sido mejorado para aceptar varios clientes de forma concurrente.  
+Cada nuevo cliente que se conecta es gestionado por un **hilo independiente**, permitiendo que el servidor siga aceptando nuevas conexiones mientras atiende clientes existentes.  
+🎯 Resultado esperado  
+  ![alt text](image-2.png)
