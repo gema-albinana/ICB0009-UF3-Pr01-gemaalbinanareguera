@@ -35,8 +35,8 @@ Obtenemos el NetworkStream en cliente y servidor tras la conexión. Preparando a
 ## 📌 **Etapa5: Programar métodos EscribirMensajeNetworkStream y LeerMensajeNetworkStream**    
 En esta etapa, creamos métodos para **enviar y recibir datos** entre **cliente y servidor** a través del NetworkStream, lo que prepara la aplicación para el **handshake** en la siguiente fase.  
 Para mantener el código organizado y reutilizable, se utiliza la clase NetworkStreamClass proporcionada por el profesor, la cual centraliza los métodos de comunicación entre servidor y cliente."   
-Se implementa un método para enviar datos “EscribirMensajeNetworStream”.
-Se implementa un método para recibir datos “LeerMensajeNetworkStream”.
+Se implementa un método para enviar datos “EscribirMensajeNetworStream”.  
+Se implementa un método para recibir datos “LeerMensajeNetworkStream”.   
 Uso una clase independiente “NetworkStreamClass” para compartir los métodos entre cliente y servidor.  
 🎯 Resultado esperado en el servidor   
  ![alt text](image-6.png)    
