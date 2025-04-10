@@ -19,7 +19,7 @@ Para evitar problemas de concurrencia, se protege la asignación de IDs mediante
 🎯 Resultado esperado   
  ![alt text](image-3.png)   
 
- ## 📌 **Etapa4: Obtener el NetworkStream**  
+## 📌 **Etapa4: Obtener el NetworkStream**  
 En esta etapa, cada vez que un **cliente** se conecta al   **servidor**, ambos obtienen el NetworkStream.    
 Esto permitirá **enviar y recibir datos** en futuras etapas.    
 🎯 Resultado esperado en el servidor   
@@ -27,9 +27,9 @@ Esto permitirá **enviar y recibir datos** en futuras etapas.
 🎯 Resultado esperado en el cliente  
  ![alt text](image-5.png)  
 
-  ## 📌 **Etapa5: Programar métodos EscribirMensajeNetworkStream y LeerMensajeNetworkStream**    
-  En esta etapa, creamos métodos para **enviar y recibir datos** entre **cliente y servidor** a través del NetworkStream, lo que prepara la aplicación para el **handshake** en la siguiente fase.  
- Para mantener el código organizado y reutilizable, se utiliza la clase NetworkStreamClass proporcionada por el profesor, la cual centraliza los métodos de comunicación entre servidor y cliente."  
+## 📌 **Etapa5: Programar métodos EscribirMensajeNetworkStream y LeerMensajeNetworkStream**    
+En esta etapa, creamos métodos para **enviar y recibir datos** entre **cliente y servidor** a través del NetworkStream, lo que prepara la aplicación para el **handshake** en la siguiente fase.  
+Para mantener el código organizado y reutilizable, se utiliza la clase NetworkStreamClass proporcionada por el profesor, la cual centraliza los métodos de comunicación entre servidor y cliente."  
 🎯 Resultado esperado en el servidor 
   ![alt text](image-6.png)    
 🎯 Resultado esperado en el cliente  
