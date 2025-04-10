@@ -51,7 +51,7 @@ Para conseguirlo:
 -Usamos una lista "List<Cliente>" ene l servidor para guardar la información de cada cliente conectado.    
 -Cada vez que un cliente se conecta se añade a la lista y se muestra el número total de clientes conectados.  
 🎯 Resultado esperado en el servidor   
-![alt text](image-12.png)
+![alt text](image-12.png)  
 🎯 Resultado esperado en el cliente  
 ![alt text](image-13.png)  
 ![alt text](image-14.png)
