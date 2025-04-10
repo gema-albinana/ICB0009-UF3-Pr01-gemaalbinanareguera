@@ -25,4 +25,13 @@ Esto permitirá **enviar y recibir datos** en futuras etapas.
 🎯 Resultado esperado en el servidor   
  ![alt text](image-4.png)   
 🎯 Resultado esperado en el cliente  
- ![alt text](image-5.png)
+ ![alt text](image-5.png)  
+
+  ## 📌 **Etapa5: Programar métodos EscribirMensajeNetworkStream y LeerMensajeNetworkStream**    
+  En esta etapa, creamos métodos para **enviar y recibir datos** entre **cliente y servidor** a través del NetworkStream, lo que prepara la aplicación para el **handshake** en la siguiente fase.  
+ Para mantener el código organizado y reutilizable, se utiliza la clase NetworkStreamClass proporcionada por el profesor, la cual centraliza los métodos de comunicación entre servidor y cliente."  
+🎯 Resultado esperado en el servidor 
+  ![alt text](image-6.png)    
+🎯 Resultado esperado en el cliente  
+  ![alt text](image-7.png)  
+  ![alt text](image-8.png)

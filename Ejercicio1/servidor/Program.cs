@@ -2,6 +2,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using NetworkStreamNS;
+
 
 class Servidor
 {
@@ -26,7 +28,7 @@ class Servidor
     }
 
     static void GestionarCliente(TcpClient cliente)
-    {
+{
     int idVehiculo;
     string direccionAleatoria;
 
@@ -36,14 +38,17 @@ class Servidor
         idVehiculo = ++contadorID;
     }
 
-    // Generar dirección aleatoria (norte o sur)
+    // Generar dirección aleatoria (Norte o Sur)
     direccionAleatoria = (new Random().Next(2) == 0) ? "Norte" : "Sur";
 
     Console.WriteLine($"🚲 Bicicleta {idVehiculo} asignada. Dirección: {direccionAleatoria}");
 
-    // Obtener el flujo de red para la comunicación con el cliente
+    // 📡 Obtener el flujo de comunicación con el cliente
     NetworkStream stream = cliente.GetStream();
-    Console.WriteLine("📡 NetworkStream obtenido para la conexión con el cliente.");
-   }
+
+    // 📤 Enviar un mensaje de bienvenida al cliente
+    NetworkStreamClass.EscribirMensajeNetworkStream(stream, $"Bienvenido, bicicleta {idVehiculo}.");
+}
+
 
 }

@@ -13,3 +13,7 @@ C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanaregue
 C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.pdb
 C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.genruntimeconfig.cache
 C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\ref\servidor.dll
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\bin\Debug\net8.0\NetworkStreamClass.dll
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\bin\Debug\net8.0\NetworkStreamClass.pdb
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.csproj.AssemblyReference.cache
+C:\Users\Khayman\Desktop\DAM M09\uf3\practica\ICB0009-UF3-PR01-gemaalbinanareguera\Ejercicio1\servidor\obj\Debug\net8.0\servidor.csproj.Up2Date

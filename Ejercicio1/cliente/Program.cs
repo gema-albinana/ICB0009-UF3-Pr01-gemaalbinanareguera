@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using NetworkStreamNS; 
 
 namespace Client
 {
@@ -18,9 +19,12 @@ namespace Client
                 {
                     Console.WriteLine("✅ Cliente conectado al servidor.");
 
-                    // Obtener el flujo de red para la comunicación con el servidor
+                    // 📡 Obtener el flujo de comunicación con el servidor
                     NetworkStream stream = client.GetStream();
-                    Console.WriteLine("📡 NetworkStream obtenido para la conexión con el servidor.");
+
+                    // 📥 Recibir mensaje del servidor
+                    string mensaje = NetworkStreamClass.LeerMensajeNetworkStream(stream);
+                    Console.WriteLine($"🔹 Mensaje desde el servidor: {mensaje}");
                 }
             }
             catch (Exception ex)
