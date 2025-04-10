@@ -75,10 +75,9 @@ Un cliente crea un vehículo sin ID porque no conoce cuántos vehículos hay en 
 El servidor asigna el siguiente número disponible (1, luego 2, luego 3...).  
 El servidor devuelve el vehículo al cliente con el ID correcto.  
 Con esto, garantizamos que los IDs sean únicos, secuenciales y organizados.  
-
-🎯 Resultado esperado en el servidor 
+🎯 Resultado esperado en el servidor   
 ![alt text](image.png)  
-🎯 Resultado esperado en el cliente  
+🎯 Resultado esperado en el cliente    
 ![alt text](image-1.png)  
 ![alt text](image-2.png)
 
