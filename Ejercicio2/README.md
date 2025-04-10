@@ -25,7 +25,6 @@ Estos métodos serán fundamentales para la comunicación en las siguientes etap
                 MemoryStream ms = new MemoryStream();  
                 int bytesLeidos = NS.Read(buffer, 0, buffer.Length);  
                 ms.Write(buffer, 0, bytesLeidos);  
-
                 Console.WriteLine($"📥 Datos de carretera recibidos.");  
                 return Carretera.BytesACarretera(ms.ToArray());  
             }  
@@ -59,7 +58,6 @@ Estos métodos serán fundamentales para la comunicación en las siguientes etap
                 MemoryStream ms = new MemoryStream();  
                 int bytesLeidos = NS.Read(buffer, 0, buffer.Length);  
                 ms.Write(buffer, 0, bytesLeidos);  
-
                 Console.WriteLine($"📥 Datos del vehículo recibidos.");  
                 return Vehiculo.BytesAVehiculo(ms.ToArray());  
             }  
