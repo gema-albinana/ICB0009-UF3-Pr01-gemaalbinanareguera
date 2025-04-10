@@ -65,7 +65,8 @@ Estos métodos serán fundamentales para la comunicación en las siguientes etap
             {  
                 Console.WriteLine($"❌ Error al recibir datos del vehículo: {ex.Message}");  
                 return null;  
-            }          
+            }  
+                      
 ## 📌 **Etapa2:Crear y enviar los datos de un vehículo**      
 En esta etapa, cada cliente **crea un nuevo vehículo** y lo envía al servidor utilizando "NetworkStreamClass".    
 El servidor **recibe los datos del vehículo, le asigna un ID único y lo añade a la carretera**.    
