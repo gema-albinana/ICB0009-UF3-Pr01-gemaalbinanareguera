@@ -17,4 +17,12 @@ Cada nuevo cliente que se conecta es gestionado por un **hilo independiente**, p
 En esta etapa, el servidor identifica cada bicicleta conectada asignándole un **ID único** y una **dirección aleatoria**.  
 Para evitar problemas de concurrencia, se protege la asignación de IDs mediante **bloqueo (`lock`)**.    
 🎯 Resultado esperado   
- ![alt text](image-3.png) 
+ ![alt text](image-3.png)   
+
+ ## 📌 **Etapa4: Obtener el NetworkStream**  
+En esta etapa, cada vez que un **cliente** se conecta al   **servidor**, ambos obtienen el NetworkStream.    
+Esto permitirá **enviar y recibir datos** en futuras etapas.    
+🎯 Resultado esperado en el servidor   
+ ![alt text](image-4.png)   
+🎯 Resultado esperado en el cliente  
+ ![alt text](image-5.png)

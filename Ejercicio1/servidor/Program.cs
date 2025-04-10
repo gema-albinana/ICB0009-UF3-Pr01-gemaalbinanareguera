@@ -27,20 +27,23 @@ class Servidor
 
     static void GestionarCliente(TcpClient cliente)
     {
-        int idVehiculo;
-        string direccionAleatoria;
+    int idVehiculo;
+    string direccionAleatoria;
 
-        // Proteger la asignación de ID con lock
-        lock (lockObj)
-        {
-            idVehiculo = ++contadorID;
-        }
-
-        // Generar dirección aleatoria (norte o sur)
-        direccionAleatoria = (new Random().Next(2) == 0) ? "Norte" : "Sur";
-
-        Console.WriteLine($"🚲 Bicicleta {idVehiculo} asignada. Dirección: {direccionAleatoria}");
-
-        // Aquí podríamos agregar más lógica en el futuro (como enviar el ID al cliente)
+    // Proteger la asignación de ID con lock
+    lock (lockObj)
+    {
+        idVehiculo = ++contadorID;
     }
+
+    // Generar dirección aleatoria (norte o sur)
+    direccionAleatoria = (new Random().Next(2) == 0) ? "Norte" : "Sur";
+
+    Console.WriteLine($"🚲 Bicicleta {idVehiculo} asignada. Dirección: {direccionAleatoria}");
+
+    // Obtener el flujo de red para la comunicación con el cliente
+    NetworkStream stream = cliente.GetStream();
+    Console.WriteLine("📡 NetworkStream obtenido para la conexión con el cliente.");
+   }
+
 }

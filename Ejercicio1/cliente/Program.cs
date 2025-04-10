@@ -5,19 +5,22 @@ namespace Client
 {
     class Program
     {
-        static TcpClient client = new TcpClient();
-
-
         static void Main(string[] args)
         {
-            client = new TcpClient();
+            // Crear el cliente TCP
+            TcpClient client = new TcpClient();
 
             try
             {
+                // Conectar al servidor
                 client.Connect("127.0.0.1", 10001);
                 if (client.Connected)
                 {
-                    Console.WriteLine("Cliente:✅ Cliente conectado al servidor");
+                    Console.WriteLine("✅ Cliente conectado al servidor.");
+
+                    // Obtener el flujo de red para la comunicación con el servidor
+                    NetworkStream stream = client.GetStream();
+                    Console.WriteLine("📡 NetworkStream obtenido para la conexión con el servidor.");
                 }
             }
             catch (Exception ex)
