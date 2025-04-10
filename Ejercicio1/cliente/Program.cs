@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
-using NetworkStreamNS; 
+using NetworkStreamNS;
 
 namespace Client
 {
@@ -22,9 +22,15 @@ namespace Client
                     // 📡 Obtener el flujo de comunicación con el servidor
                     NetworkStream stream = client.GetStream();
 
-                    // 📥 Recibir mensaje del servidor
-                    string mensaje = NetworkStreamClass.LeerMensajeNetworkStream(stream);
-                    Console.WriteLine($"🔹 Mensaje desde el servidor: {mensaje}");
+                    // 📤 Enviar mensaje de inicio al servidor
+                    NetworkStreamClass.EscribirMensajeNetworkStream(stream, "INICIO");
+
+                    // 📥 Recibir ID asignado del servidor
+                    string idRecibido = NetworkStreamClass.LeerMensajeNetworkStream(stream);
+                    Console.WriteLine($"🔹 ID recibido del servidor: {idRecibido}");
+
+                    // 📤 Confirmar recepción enviando el mismo ID de vuelta
+                    NetworkStreamClass.EscribirMensajeNetworkStream(stream, idRecibido);
                 }
             }
             catch (Exception ex)
@@ -32,7 +38,7 @@ namespace Client
                 Console.WriteLine($"❌ Error al conectar con el servidor: {ex.Message}");
             }
 
-            Console.ReadLine();  // Mantener la consola abierta
+            Console.ReadLine(); // Mantener la consola abierta
         }
     }
 }

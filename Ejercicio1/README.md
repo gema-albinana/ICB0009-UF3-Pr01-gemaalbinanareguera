@@ -34,4 +34,12 @@ Para mantener el código organizado y reutilizable, se utiliza la clase NetworkS
  ![alt text](image-6.png)    
 🎯 Resultado esperado en el cliente  
  ![alt text](image-7.png)  
- ![alt text](image-8.png)
+ ![alt text](image-8.png)  
+
+## 📌 **Etapa6: Handshake**    
+Antes de que el cliente pueda comenzar a operar, debe establecerse un **handshake** con el servidor. Esto permite que **ambas partes intercambien información esencial** para la ejecución correcta.    
+🎯 Resultado esperado en el servidor 
+ ![alt text](image-9.png)   
+🎯 Resultado esperado en el cliente   
+![alt text](image-10.png)   
+![alt text](image-11.png)
