@@ -43,3 +43,15 @@ Antes de que el cliente pueda comenzar a operar, debe establecerse un **handshak
 🎯 Resultado esperado en el cliente     
 ![alt text](image-10.png)   
 ![alt text](image-11.png)  
+
+## 📌 **Etapa7: Almacenar información de clientes conectados**  
+En esta etapa, el servidor debe **mantener un registro de los clientes conectados**, lo que le permitirá **gestionar múltiples conexiones y enviar mensajes a cada cliente**.    
+Para conseguirlo:    
+-Creamos una clase "cliente" que almacena el ID del cliente y su NetworStream para la comunicación.   
+-Usamos una lista "List<Cliente>" ene l servidor para guardar la información de cada cliente conectado.    
+-Cada vez que un cliente se conecta se añade a la lista y se muestra el número total de clientes conectados.  
+🎯 Resultado esperado en el servidor   
+![alt text](image-12.png)
+🎯 Resultado esperado en el cliente  
+![alt text](image-13.png)  
+![alt text](image-14.png)

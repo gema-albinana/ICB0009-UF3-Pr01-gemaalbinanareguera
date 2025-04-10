@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using NetworkStreamNS;
+using ServidorNS;
 
 class Servidor
 {
     static TcpListener ServidorTcp = new TcpListener(IPAddress.Parse("127.0.0.1"), 10001);
     static int contadorID = 0; // ID único para cada bicicleta
     static object lockObj = new object(); // Proteger el contador en hilos
+    static List<Cliente> clientesConectados = new List<Cliente>(); // 📌 Lista de clientes
 
     static void Main(string[] args)
     {
@@ -59,6 +62,13 @@ class Servidor
             if (confirmacionCliente == idVehiculo.ToString())
             {
                 Console.WriteLine($"✅ Cliente confirmó recepción del ID {idVehiculo}. Handshake completado.");
+
+                // 📡 Agregar el cliente a la lista de clientes conectados
+                lock (lockObj)
+                {
+                    clientesConectados.Add(new Cliente(idVehiculo, stream));
+                }
+                Console.WriteLine($"📌 Total clientes conectados: {clientesConectados.Count}");
             }
             else
             {
