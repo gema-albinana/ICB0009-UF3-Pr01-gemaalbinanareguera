@@ -3,6 +3,8 @@ using System.Net.Sockets;
 using System.Threading;
 using NetworkStreamNS;
 using VehiculoClass;
+using CarreteraClass;
+
 
 class Cliente
 {
@@ -17,28 +19,25 @@ class Cliente
                 Console.WriteLine("✅ Cliente conectado al servidor.");
                 NetworkStream stream = client.GetStream();
 
-                // 🚗 Crear vehículo sin ID (lo asigna el servidor)
-                Vehiculo vehiculo = new Vehiculo() { Pos = 0, Direccion = "Norte", Velocidad = 500 }; // Velocidad en milisegundos
-
-                // 📤 Enviar el vehículo sin ID al servidor
+                Vehiculo vehiculo = new Vehiculo() { Pos = 0, Direccion = "Norte", Velocidad = 500 };
                 NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo);
-                Console.WriteLine("📤 Vehículo enviado sin ID, el servidor asignará uno.");
 
-                // 📥 Recibir vehículo con ID asignado por el servidor
                 vehiculo = NetworkStreamClass.LeerDatosVehiculoNS(stream);
                 Console.WriteLine($"✅ Vehículo recibido con ID: {vehiculo.Id}");
 
-                // 🚗 **Mover el vehículo**
+                // 🔹 Crear hilo para escuchar actualizaciones del servidor
+                Thread hiloRecepcion = new Thread(() => RecibirDatosCarretera(stream));
+                hiloRecepcion.Start();
+
+                // 🚗 Bucle de movimiento del vehículo
                 while (vehiculo.Pos < 100)
                 {
-                    vehiculo.Pos += 1; // 🚗 Avanzar una posición
+                    vehiculo.Pos++;
                     Console.WriteLine($"🚗 Vehículo {vehiculo.Id} avanzando. Posición: {vehiculo.Pos}");
-
-                    NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo); // 📤 Enviar actualización al servidor
-                    Thread.Sleep(vehiculo.Velocidad); // ⏳ Control de velocidad
+                    NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo);
+                    Thread.Sleep(vehiculo.Velocidad);
                 }
 
-                // 🏁 Marcar vehículo como "Acabado"
                 vehiculo.Acabado = true;
                 NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo);
                 Console.WriteLine($"🏁 Vehículo {vehiculo.Id} completó su recorrido.");
@@ -47,6 +46,23 @@ class Cliente
         catch (Exception ex)
         {
             Console.WriteLine($"❌ Error al conectar con el servidor: {ex.Message}");
+        }
+    }
+
+    static void RecibirDatosCarretera(NetworkStream stream)
+    {
+        try
+        {
+            while (true)
+            {
+                Carretera carretera = NetworkStreamClass.LeerDatosCarreteraNS(stream);
+                Console.WriteLine("🚦 Estado de la carretera:");
+                carretera.MostrarBicicletas();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error al recibir datos del servidor: {ex.Message}");
         }
     }
 }

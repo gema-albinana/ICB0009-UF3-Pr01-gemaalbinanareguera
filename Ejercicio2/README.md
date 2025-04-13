@@ -133,6 +133,30 @@ static void EnviarDatosACtodosLosClientes()
             }  
         }  
     }  
-}  
+}    
+## 📌 **Etapa5:Recepción de la información del servidor en el cliente**    
+En esta etapa, los clientes **reciben la información de la carretera enviada por el servidor y la muestran en pantalla**.  
+Cada cliente debe tener **un hilo independiente que escuche continuamente los datos del servidor**, asegurando que la carretera refleje el estado global de todos los vehículos en tiempo real.    
+-Se crea un **hilo de escucha**("hiloRecepcion") que **permanece activo** recibiendo la información del servidor.  
+-Cuando el servidor envía los datos de la carretera, **el cliente los lee y los muestra por pantalla**.    
+-Se usa un "try-catch" para manejar posibles errores de comunicación y evitar bloqueos.  
+
+🎯 Resultado esperado en el servidor   
+![alt text](image-7.png)  
+![alt text](image-8.png)  
+🎯 Resultado esperado en el cliente  
+![alt text](image-9.png)  
+![alt text](image-10.png)  
+Si conectamos otro vehículo:  
+![alt text](image-11.png)  
+![alt text](image-12.png)
+
+
+
+
+
+
+ 
+
 
 
