@@ -9,8 +9,7 @@ using VehiculoClass;
 class Servidor
 {
     static TcpListener ServidorTcp = new TcpListener(IPAddress.Parse("127.0.0.1"), 10001);
-    static Carretera carretera = new Carretera();
-    static object lockObj = new object();
+    static Carretera carretera = new Carretera(); // Simulación de la carretera
 
     static void Main(string[] args)
     {
@@ -34,20 +33,28 @@ class Servidor
         // 📥 Recibir vehículo sin ID del cliente
         Vehiculo vehiculo = NetworkStreamClass.LeerDatosVehiculoNS(stream);
 
-        lock (lockObj)
-        {
-            // 📌 Asignar un ID secuencial
-            vehiculo.Id = carretera.NumVehiculosEnCarrera + 1;
-            carretera.AñadirVehiculo(vehiculo);
-        }
+        vehiculo.Id = carretera.NumVehiculosEnCarrera + 1; // 📌 Asignar ID
+        carretera.AñadirVehiculo(vehiculo);
+        NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo); // 📤 Enviar vehículo con ID al cliente
 
         Console.WriteLine($"🚗 Vehículo {vehiculo.Id} asignado. Dirección: {vehiculo.Direccion}");
 
-        // 📤 Enviar el vehículo con ID asignado al cliente
-        NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo);
+        // 🚗 **Bucle para actualizar la carretera con el avance del vehículo**
+        while (!vehiculo.Acabado)
+        {
+            vehiculo = NetworkStreamClass.LeerDatosVehiculoNS(stream); // 📥 Recibir datos del vehículo
+            carretera.ActualizarVehiculo(vehiculo); // 🚗 Actualizar posición en la carretera
 
-        // 📌 Mostrar los vehículos en la carretera
-        Console.WriteLine("🚦 Vehículos en carretera:");
-        carretera.MostrarBicicletas();
+            Console.WriteLine($"🚦 Vehículo {vehiculo.Id} en carretera. Posición: {vehiculo.Pos}");
+
+            if (vehiculo.Acabado)
+            {
+                Console.WriteLine($"🏁 Vehículo {vehiculo.Id} completó su recorrido.");
+                break; // ⏹ Detener actualización al completar recorrido
+            }
+        }
+
+        Console.WriteLine("🚦 Estado final de la carretera:");
+        carretera.MostrarBicicletas(); // 📌 Mostrar vehículos en carretera
     }
 }

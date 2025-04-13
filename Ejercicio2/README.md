@@ -79,6 +79,24 @@ Con esto, garantizamos que los IDs sean únicos, secuenciales y organizados.
 ![alt text](image.png)  
 🎯 Resultado esperado en el cliente    
 ![alt text](image-1.png)  
-![alt text](image-2.png)
+![alt text](image-2.png)  
 
+## 📌 **Etapa3:Mover los vehículos**   
+En esta etapa los vehículos **avanzan desde "Pos=0" hasta "Pos=100"**, enviando actualizaciones al servidor en cada paso.  
+El servidor **recibe los datos, actualiza la carretera y detiene la simulación cuando el vehículo termina** su recorrido.  
+En el lado cliente:  
+-Tiene un bucle que incrementa "Pos" hasta "100".  
+-Cada actualización de posición se envía al servidor.
+-Thread.Sleep(vehiculo.Vehiculo) regula el ritmo del avance.
+-Cuando el vehículo llega a "Pos=100", se marca "Acabado=true" y se envía al servidor.
+En el lado del servidor:
+-Recibe los datos del vehículo y actualiza la carretera con "ActualizarVehiculo()".  
+-Cuando "Acabado=true" el servidor detiene el seguimiento del vehículo.  
+Cada actualización de posición se imprime en la consola para comprobar el avance.  
 
+🎯 Resultado esperado en el servidor   
+![alt text](image-3.png)  
+![alt text](image-4.png)  
+🎯 Resultado esperado en el cliente  
+![alt text](image-5.png)  
+![alt text](image-6.png)
