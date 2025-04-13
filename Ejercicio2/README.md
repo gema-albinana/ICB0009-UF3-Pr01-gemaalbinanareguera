@@ -99,4 +99,40 @@ Cada actualización de posición se imprime en la consola para comprobar el avan
 ![alt text](image-4.png)  
 🎯 Resultado esperado en el cliente  
 ![alt text](image-5.png)  
-![alt text](image-6.png)
+![alt text](image-6.png)  
+
+## 📌 **Etapa4:Enviar datos del servidor a todos los clientes**    
+En esta etapa, el servidor **envía la información actualizada de la carretera a todos los clientes conectados**.    
+Cada vez que un vehículo avanza, el servidor **actualiza la carretera y la comunica a los clientes**, asegurando que todos tengan la misma visión del tráfico en tiempo real.   
+-Cada vez que un vehículo avanza, el servidor **actualiza la carretera**.    
+-Luego **recorre la lista de clientes y les envía la carretera actualizada**.  
+Cambios en el código:  
+-Guardo una lista de clientes conectados:static List<TcpClient> listaClientes = new List<TcpClient>();   
+-Cada vez que un cliente se conecta lo añado a la lista.  
+lock (lockObj) {  
+    listaClientes.Add(cliente);  
+}  
+-Cada vez que un vehículo avanza, el servidor actualiza la carretera y la envía a todos los clientes.    
+carretera.ActualizarVehiculo(vehiculo);   
+EnviarDatosACtodosLosClientes();    
+-El servidor manda la carretera a todos los clientes conectados.    
+static void EnviarDatosACtodosLosClientes()  
+{  
+    lock (lockObj)  
+    {  
+        foreach (TcpClient cliente in listaClientes)  
+        {  
+            try  
+            {  
+                NetworkStream stream = cliente.GetStream();
+                NetworkStreamClass.EscribirDatosCarreteraNS(stream, carretera);   
+            }  
+            catch (Exception ex)  
+            {  
+                Console.WriteLine($"❌ Error al enviar datos a un cliente: {ex.Message}");  
+            }  
+        }  
+    }  
+}  
+
+
