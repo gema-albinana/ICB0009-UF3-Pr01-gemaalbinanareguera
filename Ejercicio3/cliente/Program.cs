@@ -28,11 +28,11 @@ class Cliente
 
             if (respuesta.Contains("esperando"))
             {
-                Console.WriteLine("🚗 El vehículo está esperando para entrar al puente...");
+                Console.WriteLine("🚗 El vehículo está esperando para entrar al túnel...");
             }
             else if (respuesta.Contains("CRUZANDO"))
             {
-                Console.WriteLine("🚗 El vehículo está cruzando el puente...");
+                Console.WriteLine("🚗 El vehículo está cruzando el túnel...");
             }
 
             // Esperar la confirmación final
