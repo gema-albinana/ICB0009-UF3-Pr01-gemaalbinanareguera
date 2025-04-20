@@ -58,7 +58,7 @@ class Servidor
                 Console.WriteLine($"🚗 Vehículo {vehiculo.Id} ({vehiculo.Direccion}) CRUZANDO túnel...");
 
                 // Simula el cruce
-                Thread.Sleep(2000);
+                Thread.Sleep(10000);
                 
                 vehiculoEnTunel = null;
                 NetworkStreamClass.EscribirMensajeNetworkStream(stream, $"✅ {vehiculo.Id} ha cruzado el túnel.");

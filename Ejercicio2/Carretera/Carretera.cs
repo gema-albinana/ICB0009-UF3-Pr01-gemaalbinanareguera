@@ -40,7 +40,7 @@ public class Carretera
     }
 
     //Muestra por pantalla los vehiculos en carretera. 
-    public void MostrarBicicletas ()
+    public void MostrarVehiculos ()
     {
         string strVehs = "";
         foreach (Vehiculo v in VehiculosEnCarretera)

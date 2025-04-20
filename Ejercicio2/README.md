@@ -100,6 +100,8 @@ Cada actualización de posición se imprime en la consola para comprobar el avan
 🎯 Resultado esperado en el cliente  
 ![alt text](image-5.png)  
 ![alt text](image-6.png)  
+🎯 Resultado esperado en el servidor si van en dirección Sur  
+![alt text](image-13.png)  
 
 ## 📌 **Etapa4:Enviar datos del servidor a todos los clientes**    
 En esta etapa, el servidor **envía la información actualizada de la carretera a todos los clientes conectados**.    
