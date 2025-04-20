@@ -9,11 +9,10 @@ using VehiculoClass;
 
 class Servidor
 {
-    private static SemaphoreSlim semaforo = new SemaphoreSlim(1, 1); // Control del puente
-    private static Vehiculo? vehiculoEnPuente = null; // Vehículo actual en el puente
-    private static Carretera carretera = new Carretera(); // Registro de vehículos en carretera
-    private static Queue<Vehiculo> colaNorte = new Queue<Vehiculo>(); // Cola de vehículos dirección Norte
-    private static Queue<Vehiculo> colaSur = new Queue<Vehiculo>(); // Cola de vehículos dirección Sur
+    private static SemaphoreSlim semaforo = new SemaphoreSlim(1, 1); // Control del túnel
+    private static Vehiculo? vehiculoEnTunel = null; // Vehículo actual en el túnel
+    private static Carretera carretera = new Carretera(); // Registro de vehículos en la carretera
+    private static Queue<Vehiculo> vehiculosEsperando = new Queue<Vehiculo>(); // Cola de espera
     private static int contadorVehiculos = 1; // Contador global de vehículos en orden de llegada
 
     static void Main()
@@ -52,44 +51,31 @@ class Servidor
             carretera.AñadirVehiculo(vehiculo);
             semaforo.Wait();
 
-            // Si el puente está libre, el vehículo puede cruzar
-            if (vehiculoEnPuente == null)
+            if (vehiculoEnTunel == null || vehiculoEnTunel.Direccion == vehiculo.Direccion)
             {
-                vehiculoEnPuente = vehiculo;
-                NetworkStreamClass.EscribirMensajeNetworkStream(stream, $"🚗 {vehiculo.Id} ({vehiculo.Direccion}) CRUZANDO puente.");
-                Console.WriteLine($"🚗 Vehículo {vehiculo.Id} ({vehiculo.Direccion}) CRUZANDO puente...");
-                Thread.Sleep(2000);
-                vehiculoEnPuente = null;
-                NetworkStreamClass.EscribirMensajeNetworkStream(stream, $"✅ {vehiculo.Id} ha cruzado el puente.");
-                Console.WriteLine($"✅ Vehículo {vehiculo.Id} ha cruzado el puente.");
+                vehiculoEnTunel = vehiculo;
+                NetworkStreamClass.EscribirMensajeNetworkStream(stream, $"🚗 {vehiculo.Id} ({vehiculo.Direccion}) CRUZANDO túnel.");
+                Console.WriteLine($"🚗 Vehículo {vehiculo.Id} ({vehiculo.Direccion}) CRUZANDO túnel...");
 
-                // Determinar qué vehículo tiene prioridad para cruzar
-                if (vehiculo.Direccion == "Norte" && colaSur.Count > 0)
+                // Simula el cruce
+                Thread.Sleep(2000);
+                
+                vehiculoEnTunel = null;
+                NetworkStreamClass.EscribirMensajeNetworkStream(stream, $"✅ {vehiculo.Id} ha cruzado el túnel.");
+                Console.WriteLine($"✅ Vehículo {vehiculo.Id} ha cruzado el túnel.");
+
+                // Verificar si hay vehículos esperando
+                if (vehiculosEsperando.Count > 0)
                 {
-                    Vehiculo siguienteVehiculo = colaSur.Dequeue();
-                    Console.WriteLine($"🚗 {siguienteVehiculo.Id} ahora puede cruzar el puente.");
-                    NetworkStreamClass.EscribirMensajeNetworkStream(stream, $"📢 {siguienteVehiculo.Id} puede avanzar.");
-                }
-                else if (vehiculo.Direccion == "Sur" && colaNorte.Count > 0)
-                {
-                    Vehiculo siguienteVehiculo = colaNorte.Dequeue();
-                    Console.WriteLine($"🚗 {siguienteVehiculo.Id} ahora puede cruzar el puente.");
-                    NetworkStreamClass.EscribirMensajeNetworkStream(stream, $"📢 {siguienteVehiculo.Id} puede avanzar.");
+                    Vehiculo siguienteVehiculo = vehiculosEsperando.Dequeue();
+                    Console.WriteLine($"🚗 {siguienteVehiculo.Id} ahora puede cruzar el túnel.");
                 }
             }
             else
             {
-                // Si el puente está ocupado, el vehículo entra en la cola correspondiente
-                if (vehiculo.Direccion == "Norte")
-                {
-                    colaNorte.Enqueue(vehiculo);
-                }
-                else
-                {
-                    colaSur.Enqueue(vehiculo);
-                }
-                NetworkStreamClass.EscribirMensajeNetworkStream(stream, $"❌ {vehiculo.Id} ({vehiculo.Direccion}) esperando: Puente ocupado por {vehiculoEnPuente.Id}");
-                Console.WriteLine($"🚗 Vehículo {vehiculo.Id} ({vehiculo.Direccion}) esperando: Puente ocupado por {vehiculoEnPuente.Id}");
+                vehiculosEsperando.Enqueue(vehiculo);
+                NetworkStreamClass.EscribirMensajeNetworkStream(stream, $"❌ {vehiculo.Id} ({vehiculo.Direccion}) esperando. Túnel ocupado.");
+                Console.WriteLine($"🚗 Vehículo {vehiculo.Id} ({vehiculo.Direccion}) esperando. Túnel ocupado.");
             }
         }
         catch (IOException ex)
@@ -98,7 +84,7 @@ class Servidor
         }
         finally
         {
-            if (semaforo.CurrentCount == 0)
+            if (semaforo.CurrentCount == 0) 
             {
                 semaforo.Release();
             }
