@@ -22,7 +22,7 @@ Pregunta teórica 1:
 💡 Yo creo que la mejor opcion es controlar el tráfico en el servidor para evitar conflictos y desincronización, asegurando que solo un vehículo cruce el túnel.  
 
 Pregunta teórica 2:  
-Yo he hecho  dos colas separadas (Queue<Vehiculo>), una para cada dirección (Norte y Sur).  
+Yo he hecho  dos colas separadas (Queue<>Vehiculo<>), una para cada dirección (Norte y Sur).  
 Cuando un vehículo llega al puente, si esta libre, puede cruzarlo de inmediato. Si está ocupado, se coloca en la cola correspondiente según su dirección.  
 Cuando el puente se desocupa y había vehículos esperando, se otorga prioridad a los vehículos en dirección opuesta al que acaba de cruzar.
 
