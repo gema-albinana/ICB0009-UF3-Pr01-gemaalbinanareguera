@@ -29,6 +29,9 @@ class Cliente
                 // Ajuste correcto de posición según dirección
                 vehiculo.Pos = (vehiculo.Direccion == "Norte") ? 0 : 100;
 
+                // Mostrar información del vehículo asignado
+                Console.WriteLine($"🚗 Vehículo asignado: ID {vehiculo.Id}, Dirección: {vehiculo.Direccion}, Velocidad: {vehiculo.Velocidad} km/h");
+
                 // Enviar vehículo al servidor
                 NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo);
 
