@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Net.Sockets;
 using System.Threading;
 using NetworkStreamNS;
@@ -7,7 +7,7 @@ using CarreteraClass;
 
 class Cliente
 {
-    static void Main()
+    static void Main(string[] args)
     {
         TcpClient client = new TcpClient();
         try
@@ -18,47 +18,39 @@ class Cliente
                 Console.WriteLine("✅ Cliente conectado al servidor.");
                 NetworkStream stream = client.GetStream();
 
-                // ✅ Creación del vehículo con dirección aleatoria y posición inicial correcta
-                Vehiculo vehiculo = new Vehiculo();
-                vehiculo.Direccion = new Random().Next(0, 2) == 0 ? "Norte" : "Sur";
-                vehiculo.Pos = (vehiculo.Direccion == "Norte") ? 0 : 100;
-                vehiculo.Velocidad = new Random().Next(60, 120);
+                // Creación del vehículo con dirección aleatoria y posición inicial correcta
+                Vehiculo vehiculo = new Vehiculo()
+                {
+                    Direccion = new Random().Next(0, 2) == 0 ? "Norte" : "Sur",
+                    Pos = 0, // Se inicializa en 0 y luego se ajusta según la dirección
+                    Velocidad = new Random().Next(60, 120) // Velocidad entre 60 y 120 km/h
+                };
 
-                // 📤 Convertir a XML y enviarlo al servidor
-                string xmlEnviado = System.Text.Encoding.UTF8.GetString(vehiculo.VehiculoaBytes());
-                Console.WriteLine($"📤 XML enviado al servidor:\n{xmlEnviado}");
+                // Ajuste correcto de posición según dirección
+                vehiculo.Pos = (vehiculo.Direccion == "Norte") ? 0 : 100;
+
+                // Enviar vehículo al servidor
                 NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo);
 
-                // 📥 Esperar que el servidor asigne un ID antes de continuar
-                try
+                // Esperar notificación para cruzar el puente
+                vehiculo = NetworkStreamClass.LeerDatosVehiculoNS(stream);
+                if (vehiculo != null)
                 {
-                    Vehiculo vehiculoRecibido = NetworkStreamClass.LeerDatosVehiculoNS(stream);
-                    if (vehiculoRecibido == null)
-                    {
-                        Console.WriteLine("❌ Error al recibir datos del servidor.");
-                        return;
-                    }
-                    vehiculo.Id = vehiculoRecibido.Id;
-                    Console.WriteLine($"✅ Vehículo recibido con ID: {vehiculo.Id}, Dirección: {vehiculo.Direccion}, Velocidad: {vehiculo.Velocidad} km/h");
+                    Console.WriteLine($"✅ Vehículo {vehiculo.Id} autorizado para cruzar el puente.");
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine($"❌ Error en la recepción de datos: {ex.Message}");
-                    return;
+                    Console.WriteLine("🚦 Vehículo esperando para cruzar el puente...");
                 }
 
-                // 🔹 Crear hilo para escuchar actualizaciones del servidor
-                Thread hiloRecepcion = new Thread(() => RecibirDatosCarretera(stream));
-                hiloRecepcion.Start();
-
-                // 🚗 **Bucle de movimiento del vehículo**
+                // 🚗 Bucle de movimiento del vehículo
                 while ((vehiculo.Direccion == "Norte" && vehiculo.Pos < 100) ||
-                       (vehiculo.Direccion == "Sur" && vehiculo.Pos > 0))
+                       (vehiculo.Direccion == "Sur" && vehiculo.Pos > 1))
                 {
-                    vehiculo.Pos += (vehiculo.Direccion == "Norte") ? 1 : -1;
+                    vehiculo.Pos += (vehiculo.Direccion == "Norte") ? 1 : -1; // Dirección correcta
 
-                    // 📌 Simulación de avance basado en velocidad
-                    int tiempoEspera = (int)(1000 / (vehiculo.Velocidad / 3.6));
+                    // Convertir km/h en milisegundos para simular avance realista
+                    int tiempoEspera = (int)(1000 / (vehiculo.Velocidad / 3.6)); // Ajuste basado en m/s
                     Thread.Sleep(tiempoEspera);
 
                     Console.WriteLine($"🚗 Vehículo {vehiculo.Id} avanzando. Posición: {vehiculo.Pos}");
@@ -73,23 +65,6 @@ class Cliente
         catch (Exception ex)
         {
             Console.WriteLine($"❌ Error al conectar con el servidor: {ex.Message}");
-        }
-    }
-
-    static void RecibirDatosCarretera(NetworkStream stream)
-    {
-        try
-        {
-            while (true)
-            {
-                Carretera carretera = NetworkStreamClass.LeerDatosCarreteraNS(stream);
-                Console.WriteLine("🚦 Estado de la carretera:");
-                carretera.MostrarVehiculos();
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"❌ Error al recibir datos del servidor: {ex.Message}");
         }
     }
 }

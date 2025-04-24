@@ -45,6 +45,7 @@ class Servidor
         {
             NetworkStream stream = cliente.GetStream();
 
+            // Leer los datos del vehículo que se envían al servidor
             Console.WriteLine("📥 Esperando datos del vehículo...");
             Vehiculo vehiculo = NetworkStreamClass.LeerDatosVehiculoNS(stream);
 
@@ -83,7 +84,7 @@ class Servidor
                 {
                     vehiculoEnTunel = vehiculo;
                     Console.WriteLine($"🚗 Vehículo {vehiculo.Id} ({vehiculo.Direccion}) CRUZANDO túnel...");
-                    Thread.Sleep(10000);
+                    Thread.Sleep(10000); // Simula el cruce del túnel durante 10 segundos
                     vehiculoEnTunel = null;
 
                     Console.WriteLine($"✅ Vehículo {vehiculo.Id} ha cruzado el túnel.");
@@ -102,6 +103,7 @@ class Servidor
             }
             semaforo.Release();
 
+            // Bucle para manejar la actualización de la posición del vehículo
             while (!vehiculo.Acabado)
             {
                 Vehiculo vehiculoActualizado = NetworkStreamClass.LeerDatosVehiculoNS(stream);
