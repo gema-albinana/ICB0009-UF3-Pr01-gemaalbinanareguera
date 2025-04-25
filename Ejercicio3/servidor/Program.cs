@@ -15,6 +15,8 @@ class Servidor
     private static object lockObj = new object();
 
     private static Vehiculo? vehiculoEnTunel = null;
+    private static Queue<Vehiculo> colaNorte = new Queue<Vehiculo>();
+    private static Queue<Vehiculo> colaSur = new Queue<Vehiculo>();
     private static int contadorVehiculos = 1;
     private static int contadorActualizaciones = 0;
 
@@ -76,30 +78,41 @@ class Servidor
                     carretera.ActualizarVehiculo(vehiculoActualizado);
                 }
 
-                // **Mostrar posición y velocidad en cada iteración**
                 Console.WriteLine($"🚗 Vehículo {vehiculoActualizado.Id} - Posición: {vehiculoActualizado.Pos} km");
 
-                // Verificar si el vehículo entra al túnel en km 30 (Norte) o km 50 (Sur)
+                // 🚦 **Colas para gestionar el túnel**
                 if (!dentroDelTunel &&
                     ((vehiculoActualizado.Direccion == "Norte" && vehiculoActualizado.Pos == 30) ||
                      (vehiculoActualizado.Direccion == "Sur" && vehiculoActualizado.Pos == 50)))
                 {
                     lock (lockObj)
                     {
-                        while (vehiculoEnTunel != null && vehiculoEnTunel.Direccion != vehiculoActualizado.Direccion)
+                        // 🔥 Añadir vehículo a la cola según dirección
+                        if (vehiculoActualizado.Direccion == "Norte")
+                        {
+                            colaNorte.Enqueue(vehiculoActualizado);
+                        }
+                        else
+                        {
+                            colaSur.Enqueue(vehiculoActualizado);
+                        }
+
+                        // 🔥 Esperar si el túnel está ocupado
+                        while (vehiculoEnTunel != null)
                         {
                             Console.WriteLine($"⛔ Vehículo {vehiculoActualizado.Id} esperando túnel ocupado...");
                             Monitor.Wait(lockObj);
                         }
 
-                        vehiculoEnTunel = vehiculoActualizado;
+                        // 🔥 Sacar el siguiente vehículo de la cola correspondiente
+                        vehiculoEnTunel = (colaNorte.Count > 0) ? colaNorte.Dequeue() : colaSur.Dequeue();
                         dentroDelTunel = true;
 
-                        Console.WriteLine($"🚦 Vehículo {vehiculoActualizado.Id} ENTRA al túnel en km {vehiculoActualizado.Pos}.");
+                        Console.WriteLine($"🚦 Vehículo {vehiculoEnTunel.Id} ENTRA al túnel en km {vehiculoEnTunel.Pos}.");
                     }
                 }
 
-                // Verificar si ha salido del túnel en km 50 (Norte) o km 30 (Sur)
+                // 🚗 **Salida del túnel**
                 if (dentroDelTunel &&
                     ((vehiculoActualizado.Direccion == "Norte" && vehiculoActualizado.Pos >= 50) ||
                      (vehiculoActualizado.Direccion == "Sur" && vehiculoActualizado.Pos <= 30)))
@@ -109,7 +122,24 @@ class Servidor
                         Console.WriteLine($"✅ Vehículo {vehiculoActualizado.Id} SALE del túnel.");
                         vehiculoEnTunel = null;
                         dentroDelTunel = false;
-                        Monitor.PulseAll(lockObj);
+
+                        // 🔥 Sacar el siguiente vehículo de la cola y permitir su entrada
+                        if (colaNorte.Count > 0)
+                        {
+                            vehiculoEnTunel = colaNorte.Dequeue();
+                        }
+                        else if (colaSur.Count > 0)
+                        {
+                            vehiculoEnTunel = colaSur.Dequeue();
+                        }
+
+                        if (vehiculoEnTunel != null)
+                        {
+                            Console.WriteLine($"🚦 Vehículo {vehiculoEnTunel.Id} ENTRA al túnel.");
+                            dentroDelTunel = true;
+                        }
+
+                        Monitor.PulseAll(lockObj); // 🔥 Avisar a los vehículos en espera
                     }
                 }
 

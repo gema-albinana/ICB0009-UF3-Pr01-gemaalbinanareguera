@@ -24,6 +24,6 @@ Pregunta teórica 1:
 Pregunta teórica 2:  
 Yo he hecho  dos colas separadas (Queue<>Vehiculo<>), una para cada dirección (Norte y Sur).  
 Cuando un vehículo llega al puente, si esta libre, puede cruzarlo de inmediato. Si está ocupado, se coloca en la cola correspondiente según su dirección.  
-Cuando el puente se desocupa y había vehículos esperando, se otorga prioridad a los vehículos en dirección opuesta al que acaba de cruzar.
+Cuando el puente se desocupa y había vehículos esperando, se otorga prioridad a los vehículos en dirección opuesta al que acaba de cruzar, así se ayuda a equilibrar el tráfico y evitar congestión en un solo lado del túnel.
 
 
