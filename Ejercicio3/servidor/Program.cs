@@ -77,7 +77,7 @@ class Servidor
                 }
 
                 // **Mostrar posición y velocidad en cada iteración**
-                Console.WriteLine($"🚗 Vehículo {vehiculoActualizado.Id} - Posición: {vehiculoActualizado.Pos} km, Velocidad: {vehiculoActualizado.Velocidad} km/h.");
+                Console.WriteLine($"🚗 Vehículo {vehiculoActualizado.Id} - Posición: {vehiculoActualizado.Pos} km");
 
                 // Verificar si el vehículo entra al túnel en km 30 (Norte) o km 50 (Sur)
                 if (!dentroDelTunel &&
