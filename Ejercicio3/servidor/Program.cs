@@ -14,11 +14,9 @@ class Servidor
     private static List<TcpClient> listaClientes = new List<TcpClient>();
     private static object lockObj = new object();
 
-    private static SemaphoreSlim semaforo = new SemaphoreSlim(1, 1);
     private static Vehiculo? vehiculoEnTunel = null;
-    private static Queue<Vehiculo> vehiculosNorte = new Queue<Vehiculo>();
-    private static Queue<Vehiculo> vehiculosSur = new Queue<Vehiculo>();
     private static int contadorVehiculos = 1;
+    private static int contadorActualizaciones = 0;
 
     static void Main()
     {
@@ -40,97 +38,93 @@ class Servidor
     }
 
     static void GestionarCliente(TcpClient cliente)
-{
-    try
     {
-        NetworkStream stream = cliente.GetStream();
-
-        Console.WriteLine("📥 Esperando datos del vehículo...");
-        Vehiculo vehiculo = NetworkStreamClass.LeerDatosVehiculoNS(stream);
-
-        if (vehiculo == null)
+        try
         {
-            Console.WriteLine("❌ Error: Vehículo recibido es NULL.");
-            return;
-        }
+            NetworkStream stream = cliente.GetStream();
+            Vehiculo vehiculo = NetworkStreamClass.LeerDatosVehiculoNS(stream);
 
-        lock (lockObj)
-        {
-            vehiculo.Id = contadorVehiculos++;
-            carretera.AñadirVehiculo(vehiculo);
-        }
-
-        NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo);
-        Console.WriteLine($"🚗 Vehículo {vehiculo.Id} asignado. Dirección: {vehiculo.Direccion}");
-
-        // ENTRADA AL TÚNEL CONTROLADA
-        semaforo.Wait();
-
-        lock (lockObj)
-        {
-            // Esperar si hay un vehículo en túnel y es de dirección opuesta
-            while (vehiculoEnTunel != null && vehiculoEnTunel.Direccion != vehiculo.Direccion)
+            if (vehiculo == null)
             {
-                Monitor.Wait(lockObj); // Espera hasta que pueda entrar
-            }
-
-            // Ya puede entrar al túnel
-            vehiculoEnTunel = vehiculo;
-        }
-
-        Console.WriteLine($"🚗 Vehículo {vehiculo.Id} ({vehiculo.Direccion}) CRUZANDO túnel...");
-        Thread.Sleep(10000); // Simula el cruce
-        Console.WriteLine($"✅ Vehículo {vehiculo.Id} ha cruzado el túnel.");
-
-        lock (lockObj)
-        {
-            vehiculoEnTunel = null;
-            Monitor.PulseAll(lockObj); // Avisar a los que estaban esperando
-        }
-
-        semaforo.Release();
-
-        // Bucle para manejar actualizaciones
-        while (!vehiculo.Acabado)
-        {
-            Vehiculo vehiculoActualizado = NetworkStreamClass.LeerDatosVehiculoNS(stream);
-
-            if (vehiculoActualizado == null)
-            {
-                Console.WriteLine("❌ Error: Datos de vehículo recibidos son NULL.");
+                Console.WriteLine("❌ Error: Vehículo recibido es NULL.");
                 return;
             }
 
-            carretera.ActualizarVehiculo(vehiculoActualizado);
-            Console.WriteLine($"🚦 Vehículo {vehiculoActualizado.Id} en carretera. Posición: {vehiculoActualizado.Pos}");
-
-            EnviarDatosATodosLosClientes();
-        }
-
-        Console.WriteLine($"🏁 Vehículo {vehiculo.Id} completó su recorrido.");
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"❌ Error con cliente: {ex.Message}");
-    }
-}
-
-    static void EnviarDatosATodosLosClientes()
-    {
-        lock (lockObj)
-        {
-            foreach (TcpClient cliente in listaClientes)
+            lock (lockObj)
             {
-                try
+                vehiculo.Id = contadorVehiculos++;
+                carretera.AñadirVehiculo(vehiculo);
+            }
+
+            NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo);
+            Console.WriteLine($"🚗 Vehículo {vehiculo.Id} asignado. Dirección: {vehiculo.Direccion}");
+
+            bool dentroDelTunel = false;
+
+            while (!vehiculo.Acabado)
+            {
+                Vehiculo vehiculoActualizado = NetworkStreamClass.LeerDatosVehiculoNS(stream);
+
+                if (vehiculoActualizado == null)
                 {
-                    NetworkStream stream = cliente.GetStream();
-                    NetworkStreamClass.EscribirDatosCarreteraNS(stream, carretera);
+                    Console.WriteLine("❌ Error: Datos de vehículo recibidos son NULL.");
+                    return;
                 }
-                catch (Exception ex)
+
+                lock (lockObj)
                 {
-                    Console.WriteLine($"❌ Error al enviar datos a un cliente: {ex.Message}");
+                    carretera.ActualizarVehiculo(vehiculoActualizado);
+                }
+
+                // **Mostrar posición y velocidad en cada iteración**
+                Console.WriteLine($"🚗 Vehículo {vehiculoActualizado.Id} - Posición: {vehiculoActualizado.Pos} km, Velocidad: {vehiculoActualizado.Velocidad} km/h.");
+
+                // Verificar si el vehículo entra al túnel en km 30 (Norte) o km 50 (Sur)
+                if (!dentroDelTunel &&
+                    ((vehiculoActualizado.Direccion == "Norte" && vehiculoActualizado.Pos == 30) ||
+                     (vehiculoActualizado.Direccion == "Sur" && vehiculoActualizado.Pos == 50)))
+                {
+                    lock (lockObj)
+                    {
+                        while (vehiculoEnTunel != null && vehiculoEnTunel.Direccion != vehiculoActualizado.Direccion)
+                        {
+                            Console.WriteLine($"⛔ Vehículo {vehiculoActualizado.Id} esperando túnel ocupado...");
+                            Monitor.Wait(lockObj);
+                        }
+
+                        vehiculoEnTunel = vehiculoActualizado;
+                        dentroDelTunel = true;
+
+                        Console.WriteLine($"🚦 Vehículo {vehiculoActualizado.Id} ENTRA al túnel en km {vehiculoActualizado.Pos}.");
+                    }
+                }
+
+                // Verificar si ha salido del túnel en km 50 (Norte) o km 30 (Sur)
+                if (dentroDelTunel &&
+                    ((vehiculoActualizado.Direccion == "Norte" && vehiculoActualizado.Pos >= 50) ||
+                     (vehiculoActualizado.Direccion == "Sur" && vehiculoActualizado.Pos <= 30)))
+                {
+                    lock (lockObj)
+                    {
+                        Console.WriteLine($"✅ Vehículo {vehiculoActualizado.Id} SALE del túnel.");
+                        vehiculoEnTunel = null;
+                        dentroDelTunel = false;
+                        Monitor.PulseAll(lockObj);
+                    }
+                }
+
+                contadorActualizaciones++;
+
+                if (vehiculoActualizado.Acabado)
+                {
+                    Console.WriteLine($"🏁 Vehículo {vehiculoActualizado.Id} completó su recorrido.");
+                    break;
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error con cliente: {ex.Message}");
         }
     }
 }

@@ -18,20 +18,20 @@ class Cliente
                 Console.WriteLine("✅ Cliente conectado al servidor.");
                 NetworkStream stream = client.GetStream();
 
-                // Creación del vehículo con dirección aleatoria y posición inicial correcta
-                Vehiculo vehiculo = new Vehiculo()
+                // Crear vehículo con dirección aleatoria y velocidad asignada correctamente
+                string direccion = new Random().Next(2) == 0 ? "Norte" : "Sur";
+
+                Vehiculo vehiculo = new Vehiculo
                 {
-                    Direccion = new Random().Next(2) == 0 ? "Norte" : "Sur",
-                    Pos = 0,
-                    Velocidad = new Random().Next(60, 120)
+                    Direccion = direccion,
+                    Pos = (direccion == "Norte") ? 0 : 100,
+                    Velocidad = new Random().Next(60, 101) // 🔥 Ahora la velocidad es entre 60 y 100 km/h
                 };
 
-                vehiculo.Pos = (vehiculo.Direccion == "Norte") ? 0 : 100;
-
-                // ✅ Enviar vehículo al servidor antes de imprimir su información
+                // Enviar vehículo al servidor
                 NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo);
 
-                // ✅ Recibir la versión actualizada del vehículo con ID asignado por el servidor
+                // Recibir vehículo con ID asignado por el servidor
                 vehiculo = NetworkStreamClass.LeerDatosVehiculoNS(stream);
                 if (vehiculo != null)
                 {
@@ -39,23 +39,26 @@ class Cliente
                 }
                 else
                 {
-                    Console.WriteLine("🚦 Vehículo esperando autorización del servidor...");
+                    Console.WriteLine("❌ Error al recibir datos del servidor.");
                     return;
                 }
 
-                // 🚗 **Bucle de movimiento con actualizaciones**
+                // Bucle de movimiento
                 while ((vehiculo.Direccion == "Norte" && vehiculo.Pos < 100) ||
-                       (vehiculo.Direccion == "Sur" && vehiculo.Pos > 1))
+                       (vehiculo.Direccion == "Sur" && vehiculo.Pos > 0))
                 {
                     vehiculo.Pos += (vehiculo.Direccion == "Norte") ? 1 : -1;
+
+                    // Simula tiempo según velocidad (km/h -> m/s)
                     Thread.Sleep((int)(1000 / (vehiculo.Velocidad / 3.6)));
 
-                    // ✅ Enviar actualización al servidor
+                    // Enviar actualización al servidor
                     NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo);
 
-                    Console.WriteLine($"🚗 Vehículo {vehiculo.Id} avanzando. Posición: {vehiculo.Pos}");
+                    Console.WriteLine($"🚗 Vehículo {vehiculo.Id} avanzando. Posición: {vehiculo.Pos} km");
                 }
 
+                // Marcar como completado
                 vehiculo.Acabado = true;
                 NetworkStreamClass.EscribirDatosVehiculoNS(stream, vehiculo);
                 Console.WriteLine($"🏁 Vehículo {vehiculo.Id} completó su recorrido.");
